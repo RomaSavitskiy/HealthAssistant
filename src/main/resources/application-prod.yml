@@ -5,6 +5,15 @@ spring:
     password: ${PROD_DB_PASSWORD}
     name: spring-blog
 
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.postgresql.Driver
+
   sql:
     init:
       mode: always # you won't do this in prod, I'm just doing this for demo purposes
