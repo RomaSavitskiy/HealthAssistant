@@ -8,7 +8,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
 
     show-sql: false
     properties:
@@ -20,5 +20,3 @@ spring:
       mode: always # you won't do this in prod, I'm just doing this for demo purposes
 
 
-server:
-  port: 6891
