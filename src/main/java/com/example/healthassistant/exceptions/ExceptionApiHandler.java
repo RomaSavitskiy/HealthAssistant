@@ -35,4 +35,11 @@ public class ExceptionApiHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorMessage(exception.getStatus(), exception.getMessage()));
     }
+
+    @ExceptionHandler(InternalServerException.class)
+    public ResponseEntity<ErrorMessage> notFoundException(InternalServerException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage(exception.getStatus(), exception.getMessage()));
+    }
 }
