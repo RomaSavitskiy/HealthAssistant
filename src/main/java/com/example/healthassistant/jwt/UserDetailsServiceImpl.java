@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserInfo user = userInfoRepository.findByUsername(username);
         if(user == null){
             logger.error("Username not found: " + username);
-            throw new UsernameNotFoundException("could not found user..!!");
+            throw new NotFoundException("User not founded", 404L);
         }
         logger.info("User Authenticated Successfully..!!!");
         return new CustomUserDetails(user);
