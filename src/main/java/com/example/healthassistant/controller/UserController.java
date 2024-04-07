@@ -4,12 +4,15 @@ import com.example.healthassistant.model.request.UserRequestTo;
 import com.example.healthassistant.model.response.UserResponseTo;
 import com.example.healthassistant.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1.0/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService service;
 
@@ -28,6 +31,8 @@ public class UserController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public Iterable<UserResponseTo> findAll() {
+        BCryptPasswordEncoder t = new BCryptPasswordEncoder(8);
+        log.info(t.encode("1234"));
         return service.findAll();
     }
 
