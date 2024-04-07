@@ -7,4 +7,5 @@ servers:
     description: Optional server description, e.g. Main (production) server
 
 schemes:
-  - https
+  - "https"
+  - "http"
