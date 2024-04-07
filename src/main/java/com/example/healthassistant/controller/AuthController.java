@@ -44,6 +44,7 @@ public class AuthController {
     }
 
     @GetMapping("/ping")
+    @CrossOrigin
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String test() {
         try {
