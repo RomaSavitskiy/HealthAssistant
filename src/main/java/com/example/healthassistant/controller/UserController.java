@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService service;
 
-    @RequestMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseTo save(@RequestBody UserRequestTo requestTo) {
 		return service.save(requestTo);
