@@ -36,7 +36,8 @@ public class SecurityConfig {
                                         "/api/v1.0/auth/login",
                                         "/api/v1.0/auth/ping",
                                         "/swagger-ui/**",
-                                        "/v3/api-docs/**").permitAll()
+                                        "/v3/api-docs/**",
+                                        "/api/v1.0/users/**").permitAll()
                                 .requestMatchers("/api/v1.0/auth/ping").authenticated()
                         )
                         .sessionManagement(SessionManage -> SessionManage
