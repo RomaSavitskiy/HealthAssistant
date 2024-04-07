@@ -20,7 +20,18 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public JwtResponseTo AuthenticateAndGetToken(@RequestBody AuthRequestTo authRequestDTO){
+    public JwtResponseTo authenticateAndGetToken(@RequestBody AuthRequestTo authRequestDTO){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
+        if(authentication.isAuthenticated()){
+            return JwtResponseTo.builder()
+                    .accessToken(service.GenerateToken(authRequestDTO.getUsername())).build();
+        } else {
+            throw new UsernameNotFoundException("invalid user request..!!");
+        }
+    }
+
+    @PostMapping("/registration")
+    public JwtResponseTo registerAndGetToken(@RequestBody AuthRequestTo authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
         if(authentication.isAuthenticated()){
             return JwtResponseTo.builder()
