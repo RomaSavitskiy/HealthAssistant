@@ -7,10 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
-@OpenAPIDefinition(servers = {@Server(url = "/", description = "Default Server URL")})
+@OpenAPIDefinition(servers = {@Server(url = "/")})
 public class HealthAssistantApplication {
     @Profile({"dev"})
-
     public static void main(String[] args) {
         SpringApplication.run(HealthAssistantApplication.class, args);
     }

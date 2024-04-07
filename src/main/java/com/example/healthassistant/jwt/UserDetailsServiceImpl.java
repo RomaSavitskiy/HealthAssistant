@@ -1,5 +1,6 @@
 package com.example.healthassistant.jwt;
 
+import com.example.healthassistant.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws NotFoundException {
 
         logger.debug("Entering in loadUserByUsername Method...");
         UserInfo user = userInfoRepository.findByUsername(username);
