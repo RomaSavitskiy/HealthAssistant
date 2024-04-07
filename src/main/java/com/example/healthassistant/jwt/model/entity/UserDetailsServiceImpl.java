@@ -1,18 +1,19 @@
-package com.example.healthassistant.jwt;
+package com.example.healthassistant.jwt.model.entity;
 
 import com.example.healthassistant.exceptions.NotFoundException;
+import com.example.healthassistant.model.entity.User;
+import com.example.healthassistant.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserInfoRepository userInfoRepository;
+    private final UserRepository userRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
@@ -20,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws NotFoundException {
 
         logger.debug("Entering in loadUserByUsername Method...");
-        UserInfo user = userInfoRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if(user == null){
             logger.error("Username not found: " + username);
             throw new NotFoundException("User not founded", 404L);

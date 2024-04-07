@@ -1,5 +1,7 @@
-package com.example.healthassistant.jwt;
+package com.example.healthassistant.jwt.model.entity;
 
+import com.example.healthassistant.model.entity.User;
+import com.example.healthassistant.jwt.model.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,12 +12,12 @@ import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class CustomUserDetails extends UserInfo implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails {
     private String username;
     private String password;
     Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(UserInfo byUsername) {
+    public CustomUserDetails(User byUsername) {
         this.username = byUsername.getUsername();
         this.password= byUsername.getPassword();
         List<GrantedAuthority> auths = new ArrayList<>();

@@ -1,5 +1,7 @@
-package com.example.healthassistant.jwt;
+package com.example.healthassistant.config;
 
+import com.example.healthassistant.jwt.JwtAuthFilter;
+import com.example.healthassistant.jwt.model.entity.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

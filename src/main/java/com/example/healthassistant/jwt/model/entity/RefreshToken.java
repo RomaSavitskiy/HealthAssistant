@@ -1,5 +1,6 @@
-package com.example.healthassistant.jwt;
+package com.example.healthassistant.jwt.model.entity;
 
+import com.example.healthassistant.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,5 +22,5 @@ public class RefreshToken {
     private Instant expiryDate ;
     @OneToOne
     @ JoinColumn (name = "user_id" , referencedColumnName = "id" )
-    private UserInfo userInfo ;
+    private User user;
 }

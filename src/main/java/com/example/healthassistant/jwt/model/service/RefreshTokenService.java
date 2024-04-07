@@ -1,5 +1,8 @@
-package com.example.healthassistant.jwt;
+package com.example.healthassistant.jwt.model.service;
 
+import com.example.healthassistant.jwt.model.entity.RefreshToken;
+import com.example.healthassistant.jwt.model.repository.RefreshTokenRepository;
+import com.example.healthassistant.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +14,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserInfoRepository userRepository;
+    private final UserRepository userRepository;
 
     public RefreshToken createRefreshToken(String username){
         RefreshToken refreshToken = RefreshToken.builder()
-                .userInfo(userRepository.findByUsername(username))
+                .user(userRepository.findByUsername(username))
                 .token(UUID.randomUUID().toString())
                 .expiryDate(Instant.now().plusMillis(600000)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
                 .build();

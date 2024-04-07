@@ -5,6 +5,7 @@ import com.example.healthassistant.model.request.UserRequestTo;
 import com.example.healthassistant.model.response.UserResponseTo;
 import org.mapstruct.Mapper;
 
+
 import java.util.List;
 
 @Mapper(componentModel = "spring")

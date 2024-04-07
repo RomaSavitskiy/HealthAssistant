@@ -1,10 +1,10 @@
 package com.example.healthassistant.service;
 
-import com.example.healthassistant.mapper.UserMapper;
 import com.example.healthassistant.model.entity.User;
+import com.example.healthassistant.repository.UserRepository;
+import com.example.healthassistant.mapper.UserMapper;
 import com.example.healthassistant.model.request.UserRequestTo;
 import com.example.healthassistant.model.response.UserResponseTo;
-import com.example.healthassistant.repository.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;

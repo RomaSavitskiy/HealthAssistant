@@ -1,4 +1,4 @@
-package com.example.healthassistant.jwt;
+package com.example.healthassistant.jwt.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

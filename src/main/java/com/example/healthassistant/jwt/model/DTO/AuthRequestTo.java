@@ -1,4 +1,4 @@
-package com.example.healthassistant.jwt.DTO;
+package com.example.healthassistant.jwt.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JwtResponseTo {
-    private String accessToken;
+public class AuthRequestTo {
+    private String username;
+    private String password;
 }
+

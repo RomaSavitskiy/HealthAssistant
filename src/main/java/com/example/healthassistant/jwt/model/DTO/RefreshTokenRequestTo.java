@@ -1,4 +1,4 @@
-package com.example.healthassistant.jwt.DTO;
+package com.example.healthassistant.jwt.model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

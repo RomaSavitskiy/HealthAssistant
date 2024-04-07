@@ -7,7 +7,7 @@ public record UserRequestTo(
     Long id,
     @NotBlank
     @Size(min = 2, max = 64)
-    String email,
+    String username,
     @NotBlank
     @Size(min = 4, max = 128)
     String password,
