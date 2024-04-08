@@ -31,8 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return
                 http
-
-
+                        .csrf(AbstractHttpConfigurer::disable)
                         .cors(AbstractHttpConfigurer::disable)
                         .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers(
@@ -40,8 +39,12 @@ public class SecurityConfig {
                                         "/api/v1.0/auth/ping",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
-                                        "/api/v1.0/users/**").permitAll()
-                                .requestMatchers("/api/v1.0/auth/ping").authenticated()
+                                        "/api/v1.0/users/**")
+                                .permitAll()
+                                .requestMatchers(
+                                        "/api/v1.0/auth/ping",
+                                        "/api/v1.0/auth/ping2")
+                                .authenticated()
                         )
                         .sessionManagement(SessionManage -> SessionManage
                                 .sessionCreationPolicy(SessionCreationPolicy

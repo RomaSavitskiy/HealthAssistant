@@ -43,12 +43,22 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/ping")
+    @GetMapping("/ping2")
     @CrossOrigin
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public String test2() {
+        try {
+            return "Welcome";
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("/ping")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String test() {
         try {
-            return "Welcome";
+            return "Welcome to ping 2";
         } catch (Exception e){
             throw new RuntimeException(e);
         }
