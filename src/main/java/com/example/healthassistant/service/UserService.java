@@ -5,10 +5,12 @@ import com.example.healthassistant.repository.UserRepository;
 import com.example.healthassistant.mapper.UserMapper;
 import com.example.healthassistant.model.request.UserRequestTo;
 import com.example.healthassistant.model.response.UserResponseTo;
+import jakarta.persistence.Entity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,9 +20,12 @@ import org.springframework.validation.annotation.Validated;
 public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseTo save(@Valid UserRequestTo requestTo) {
-        return mapper.entityToDto(repository.save(mapper.dtoToEntity(requestTo)));
+        User entity = mapper.dtoToEntity(requestTo);
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        return mapper.entityToDto(repository.save(entity));
     }
 
     public UserResponseTo getById(@Min(0) Long id) {
