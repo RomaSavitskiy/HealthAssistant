@@ -1,5 +1,6 @@
 package com.example.healthassistant.mapper;
 
+import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.model.request.UserRequestTo;
 import com.example.healthassistant.model.response.UserResponseTo;
@@ -18,4 +19,5 @@ public interface UserMapper {
     List<UserResponseTo> entityToDto(Iterable<User> editors);
 
 
+    UserRequestTo authToEntity(AuthRequestTo authRequestTo);
 }

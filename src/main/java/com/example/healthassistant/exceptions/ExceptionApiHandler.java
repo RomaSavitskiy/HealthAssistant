@@ -1,5 +1,6 @@
 package com.example.healthassistant.exceptions;
 
+import com.example.healthassistant.model.entity.User;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,34 +13,41 @@ public class ExceptionApiHandler {
     public ResponseEntity<ErrorMessage> notFoundException(NotFoundException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorMessage(exception.getStatus(), exception.getMessage()));
+                .body(new ErrorMessage(404L, exception.getMessage()));
     }
 
     @ExceptionHandler(UpdateException.class)
     public ResponseEntity<ErrorMessage> catchUpdateException(UpdateException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorMessage(exception.getStatus(), exception.getMessage()));
+                .body(new ErrorMessage(400L, exception.getMessage()));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorMessage> catchValidationException(ConstraintViolationException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorMessage(401L, "Bad request!"));
+                .body(new ErrorMessage(400L, exception.getMessage()));
     }
 
     @ExceptionHandler(DeleteException.class)
     public ResponseEntity<ErrorMessage> catchDeleteException(DeleteException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorMessage(exception.getStatus(), exception.getMessage()));
+                .body(new ErrorMessage(400L, exception.getMessage()));
     }
 
     @ExceptionHandler(InternalServerException.class)
     public ResponseEntity<ErrorMessage> notFoundException(InternalServerException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new ErrorMessage(exception.getStatus(), exception.getMessage()));
+                .body(new ErrorMessage(404L, exception.getMessage()));
+    }
+
+    @ExceptionHandler(UserAlreadyExist.class)
+    public ResponseEntity<ErrorMessage> catchAlreadyExistUserException(UserAlreadyExist exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorMessage(400L, exception.getMessage()));
     }
 }
