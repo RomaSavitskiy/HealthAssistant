@@ -2,8 +2,11 @@ package com.example.healthassistant.controller;
 
 import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
+import com.example.healthassistant.jwt.model.DTO.RefreshTokenRequestTo;
+import com.example.healthassistant.jwt.model.entity.RefreshToken;
 import com.example.healthassistant.jwt.model.service.AuthService;
 import com.example.healthassistant.jwt.model.service.JwtService;
+import com.example.healthassistant.jwt.model.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,16 +28,34 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public JwtResponseTo authenticateAndGetToken(@RequestBody AuthRequestTo authRequestDTO){
+    public JwtResponseTo AuthenticateAndGetToken(@RequestBody AuthRequestTo authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
         if(authentication.isAuthenticated()){
+            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
             return JwtResponseTo.builder()
-                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername())).build();
+                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername()))
+                    .token(refreshToken.getToken())
+                    .build();
+
         } else {
-            throw new UsernameNotFoundException("invalid user request..!!");
+            throw new UsernameNotFoundException("Username not found");
         }
+    }
+
+    @PostMapping("/refreshToken")
+    public JwtResponseTo refreshToken(@RequestBody RefreshTokenRequestTo refreshTokenRequestDTO){
+        return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(User -> {
+                    String accessToken = jwtService.GenerateToken(User.getUsername());
+                    return JwtResponseTo.builder()
+                            .accessToken(accessToken)
+                            .token(refreshTokenRequestDTO.getToken()).build();
+                }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
     }
 
     @PostMapping("/register")

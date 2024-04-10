@@ -50,4 +50,11 @@ public class ExceptionApiHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorMessage(400L, exception.getMessage()));
     }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ErrorMessage> catchTokenExpiredException(TokenExpiredException exception) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorMessage(401L, exception.getMessage()));
+    }
 }

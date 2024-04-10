@@ -37,13 +37,13 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/api/v1.0/auth/login",
                                         "/api/v1.0/auth/register",
+                                        "/api/v1.0/auth/refreshToken",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/api/v1.0/users/**")
                                 .permitAll()
                                 .requestMatchers(
-                                        "/api/v1.0/auth/ping",
-                                        "/api/v1.0/auth/ping2")
+                                        "/api/v1.0/auth/ping")
                                 .authenticated()
                         )
                         .sessionManagement(SessionManage -> SessionManage
