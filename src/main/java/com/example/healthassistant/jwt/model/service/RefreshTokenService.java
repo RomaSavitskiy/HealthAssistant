@@ -4,6 +4,7 @@ import com.example.healthassistant.jwt.model.entity.RefreshToken;
 import com.example.healthassistant.jwt.model.repository.RefreshTokenRepository;
 import com.example.healthassistant.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -35,5 +36,9 @@ public class RefreshTokenService {
             throw new RuntimeException(token.getToken() + " Refresh token is expired. Please make a new login..!");
         }
         return token;
+    }
+
+    public RefreshToken existRefreshTokenByUsername(String username) {
+        return refreshTokenRepository.findByUserId(userRepository.findByUsername(username).getId()).orElseThrow();
     }
 }

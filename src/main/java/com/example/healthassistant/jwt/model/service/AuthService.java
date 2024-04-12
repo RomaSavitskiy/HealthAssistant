@@ -4,9 +4,7 @@ import com.example.healthassistant.exceptions.UserAlreadyExist;
 import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
 import com.example.healthassistant.jwt.model.entity.RefreshToken;
-import com.example.healthassistant.jwt.model.entity.UserDetailsServiceImpl;
 import com.example.healthassistant.mapper.UserMapper;
-import com.example.healthassistant.model.response.UserResponseTo;
 import com.example.healthassistant.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,12 +29,20 @@ public class AuthService {
 
         userService.save(userMapper.authToEntity(authRequestTo));
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken
-                        (authRequestTo.getUsername(), authRequestTo.getPassword())
-        );
+       return login(authRequestTo);
+    }
 
+    public JwtResponseTo login(AuthRequestTo authRequestTo) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestTo.getUsername(), authRequestTo.getPassword()));
         if(authentication.isAuthenticated()){
+            RefreshToken existedRefreshToken = refreshTokenService.existRefreshTokenByUsername(authRequestTo.getUsername());
+            if (existedRefreshToken != null) {
+                return JwtResponseTo.builder()
+                        .accessToken(jwtService.GenerateToken(authRequestTo.getUsername()))
+                        .token(existedRefreshToken.getToken())
+                        .build();
+            }
+
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestTo.getUsername());
             return JwtResponseTo.builder()
                     .accessToken(jwtService.GenerateToken(authRequestTo.getUsername()))

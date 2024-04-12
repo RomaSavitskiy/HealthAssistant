@@ -32,17 +32,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public JwtResponseTo AuthenticateAndGetToken(@RequestBody AuthRequestTo authRequestDTO){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
-        if(authentication.isAuthenticated()){
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
-            return JwtResponseTo.builder()
-                    .accessToken(jwtService.GenerateToken(authRequestDTO.getUsername()))
-                    .token(refreshToken.getToken())
-                    .build();
-
-        } else {
-            throw new UsernameNotFoundException("Username not found");
-        }
+       return authService.login(authRequestDTO);
     }
 
     @PostMapping("/refreshToken")
