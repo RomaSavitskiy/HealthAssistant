@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws NotFoundException {
 
         logger.debug("Entering in loadUserByUsername Method...");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow();
         if(user == null){
             logger.error("Username not found: " + username);
             throw new NotFoundException(404L, "User not founded");

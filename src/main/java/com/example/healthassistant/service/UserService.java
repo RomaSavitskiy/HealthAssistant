@@ -1,5 +1,6 @@
 package com.example.healthassistant.service;
 
+import com.example.healthassistant.exceptions.NotFoundException;
 import com.example.healthassistant.jwt.model.repository.UserRoleRepository;
 import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.repository.UserRepository;
@@ -9,10 +10,12 @@ import com.example.healthassistant.model.response.UserResponseTo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,7 +54,7 @@ public class UserService {
 		repository.deleteById(id);
     }
 
-    public UserResponseTo findByUsername(String username) {
-        return mapper.entityToDto(repository.findByUsername(username));
+    public Optional<User> findByUsername(String username) {
+        return repository.findByUsername(username);
     }
 }

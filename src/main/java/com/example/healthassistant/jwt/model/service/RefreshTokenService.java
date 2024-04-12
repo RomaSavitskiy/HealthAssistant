@@ -2,9 +2,9 @@ package com.example.healthassistant.jwt.model.service;
 
 import com.example.healthassistant.jwt.model.entity.RefreshToken;
 import com.example.healthassistant.jwt.model.repository.RefreshTokenRepository;
+import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -19,7 +19,7 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(String username){
         RefreshToken refreshToken = RefreshToken.builder()
-                .user(userRepository.findByUsername(username))
+                .user(userRepository.findByUsername(username).orElseThrow())
                 .token(UUID.randomUUID().toString())
                 .expiryDate(Instant.now().plusMillis(1000 * 60)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
                 .build();
@@ -38,7 +38,13 @@ public class RefreshTokenService {
         return token;
     }
 
-    public RefreshToken existRefreshTokenByUsername(String username) {
-        return refreshTokenRepository.findByUserId(userRepository.findByUsername(username).getId()).orElseThrow();
+    public Optional<RefreshToken> existRefreshTokenByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(user.orElseThrow().getId());
+        if (refreshToken.isPresent()) {
+            return refreshToken;
+        }
+
+        return refreshTokenRepository.findByUserId(user.get().getId());
     }
 }

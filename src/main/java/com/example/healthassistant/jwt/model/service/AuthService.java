@@ -13,6 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -23,7 +25,7 @@ public class AuthService {
     private final RefreshTokenService refreshTokenService;
 
     public JwtResponseTo register(AuthRequestTo authRequestTo) {
-        if(userService.findByUsername(authRequestTo.getUsername()) != null) {
+        if(userService.findByUsername(authRequestTo.getUsername()).isPresent()) {
             throw new UserAlreadyExist(400L, "User with this username is already exist");
         }
 
@@ -35,11 +37,11 @@ public class AuthService {
     public JwtResponseTo login(AuthRequestTo authRequestTo) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestTo.getUsername(), authRequestTo.getPassword()));
         if(authentication.isAuthenticated()){
-            RefreshToken existedRefreshToken = refreshTokenService.existRefreshTokenByUsername(authRequestTo.getUsername());
-            if (existedRefreshToken != null) {
+            Optional<RefreshToken> existedRefreshToken = refreshTokenService.existRefreshTokenByUsername(authRequestTo.getUsername());
+            if (existedRefreshToken.isPresent()) {
                 return JwtResponseTo.builder()
                         .accessToken(jwtService.GenerateToken(authRequestTo.getUsername()))
-                        .token(existedRefreshToken.getToken())
+                        .token(existedRefreshToken.get().getToken())
                         .build();
             }
 
