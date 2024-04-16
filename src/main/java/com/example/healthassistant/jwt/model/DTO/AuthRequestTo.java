@@ -17,9 +17,5 @@ public class AuthRequestTo {
 
     @Schema(example = "admin")
     private String password;
-
-    private String firstname;
-
-    private String lastname;
 }
 

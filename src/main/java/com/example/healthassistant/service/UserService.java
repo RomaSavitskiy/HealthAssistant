@@ -1,7 +1,6 @@
 package com.example.healthassistant.service;
 
-import com.example.healthassistant.exceptions.NotFoundException;
-import com.example.healthassistant.jwt.model.repository.UserRoleRepository;
+import com.example.healthassistant.jwt.repository.UserRoleRepository;
 import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.repository.UserRepository;
 import com.example.healthassistant.mapper.UserMapper;
@@ -10,11 +9,12 @@ import com.example.healthassistant.model.response.UserResponseTo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -43,12 +43,11 @@ public class UserService {
         return mapper.entityToDto(repository.findAll());
     }
 
-    public UserResponseTo update(@Valid UserRequestTo requestTo) {
-        /*User updatedUser = mapper.dtoToEntity(requestTo);
+    public UserResponseTo update(@Valid UserRequestTo requestTo) throws InvocationTargetException, IllegalAccessException {
+        User updatedUser = mapper.dtoToEntity(requestTo);
         User oldUser = repository.findById(requestTo.id()).orElseThrow();
         BeanUtils.copyProperties(updatedUser, oldUser);
-		return mapper.entityToDto(updatedUser);*/
-        return null;
+		return mapper.entityToDto(updatedUser);
     }
     public void deleteById(@Min(0) Long id) {
 		repository.deleteById(id);

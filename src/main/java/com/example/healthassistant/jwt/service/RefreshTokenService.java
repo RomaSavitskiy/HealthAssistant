@@ -1,7 +1,7 @@
-package com.example.healthassistant.jwt.model.service;
+package com.example.healthassistant.jwt.service;
 
 import com.example.healthassistant.jwt.model.entity.RefreshToken;
-import com.example.healthassistant.jwt.model.repository.RefreshTokenRepository;
+import com.example.healthassistant.jwt.repository.RefreshTokenRepository;
 import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

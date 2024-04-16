@@ -7,8 +7,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.InvocationTargetException;
 
 @RestController
 @RequestMapping("/api/v1.0/users")
@@ -34,14 +35,12 @@ public class UserController {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public Iterable<UserResponseTo> findAll() {
-        BCryptPasswordEncoder t = new BCryptPasswordEncoder(8);
-        log.info(t.encode("1234"));
         return service.findAll();
     }
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public UserResponseTo update(@RequestBody UserRequestTo editorRequestTo) {
+    public UserResponseTo update(@RequestBody UserRequestTo editorRequestTo) throws InvocationTargetException, IllegalAccessException {
         return service.update(editorRequestTo);
     }
 

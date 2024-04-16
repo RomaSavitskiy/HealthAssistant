@@ -25,10 +25,6 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private String firstname;
-
-    private String lastname;
-
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
 }

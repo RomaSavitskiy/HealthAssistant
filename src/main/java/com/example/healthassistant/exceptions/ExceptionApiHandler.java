@@ -1,6 +1,5 @@
 package com.example.healthassistant.exceptions;
 
-import com.example.healthassistant.model.entity.User;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

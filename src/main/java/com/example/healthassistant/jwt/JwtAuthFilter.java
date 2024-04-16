@@ -1,7 +1,7 @@
 package com.example.healthassistant.jwt;
 
 import com.example.healthassistant.jwt.model.entity.UserDetailsServiceImpl;
-import com.example.healthassistant.jwt.model.service.JwtService;
+import com.example.healthassistant.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

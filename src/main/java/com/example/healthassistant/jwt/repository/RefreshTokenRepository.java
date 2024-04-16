@@ -1,4 +1,4 @@
-package com.example.healthassistant.jwt.model.repository;
+package com.example.healthassistant.jwt.repository;
 
 import com.example.healthassistant.jwt.model.entity.RefreshToken;
 import org.springframework.data.repository.CrudRepository;

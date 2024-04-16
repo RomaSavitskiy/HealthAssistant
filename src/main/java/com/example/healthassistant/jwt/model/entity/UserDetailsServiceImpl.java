@@ -11,23 +11,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
-
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFoundException {
-
-        logger.debug("Entering in loadUserByUsername Method...");
-        User user = userRepository.findByUsername(username).orElseThrow();
-        if(user == null){
-            logger.error("Username not found: " + username);
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isEmpty()){
             throw new NotFoundException(404L, "User not founded");
         }
-        logger.info("User Authenticated Successfully..!!!");
-        return new CustomUserDetails(user);
+        return new CustomUserDetails(user.get());
     }
 }

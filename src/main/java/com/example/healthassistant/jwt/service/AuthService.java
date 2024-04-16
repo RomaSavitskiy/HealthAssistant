@@ -1,8 +1,9 @@
-package com.example.healthassistant.jwt.model.service;
+package com.example.healthassistant.jwt.service;
 
 import com.example.healthassistant.exceptions.UserAlreadyExist;
 import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
+import com.example.healthassistant.jwt.model.DTO.RefreshTokenRequestTo;
 import com.example.healthassistant.jwt.model.entity.RefreshToken;
 import com.example.healthassistant.mapper.UserMapper;
 import com.example.healthassistant.service.UserService;
@@ -28,10 +29,8 @@ public class AuthService {
         if(userService.findByUsername(authRequestTo.getUsername()).isPresent()) {
             throw new UserAlreadyExist(400L, "User with this username is already exist");
         }
-
         userService.save(userMapper.authToEntity(authRequestTo));
-
-       return login(authRequestTo);
+        return login(authRequestTo);
     }
 
     public JwtResponseTo login(AuthRequestTo authRequestTo) {
@@ -44,7 +43,6 @@ public class AuthService {
                         .token(existedRefreshToken.get().getToken())
                         .build();
             }
-
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestTo.getUsername());
             return JwtResponseTo.builder()
                     .accessToken(jwtService.GenerateToken(authRequestTo.getUsername()))
@@ -53,5 +51,17 @@ public class AuthService {
         } else {
             throw new UsernameNotFoundException("Username not found");
         }
+    }
+
+    public JwtResponseTo getRefreshAndAccessTokensByRefresh(RefreshTokenRequestTo refreshTokenRequestTo) {
+        return refreshTokenService.findByToken(refreshTokenRequestTo.getToken())
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(User -> {
+                    String accessToken = jwtService.GenerateToken(User.getUsername());
+                    return JwtResponseTo.builder()
+                            .accessToken(accessToken)
+                            .token(refreshTokenRequestTo.getToken()).build();
+                }).orElseThrow(() -> new RuntimeException("Refresh Token is not in DB..!!"));
     }
 }
