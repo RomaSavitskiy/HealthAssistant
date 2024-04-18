@@ -56,4 +56,11 @@ public class ExceptionApiHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorMessage(401L, exception.getMessage()));
     }
+
+    @ExceptionHandler(UnauthorizedRequest.class)
+    public ResponseEntity<ErrorMessage> notFoundException(UnauthorizedRequest exception) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorMessage(401L, exception.getMessage()));
+    }
 }

@@ -9,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface WeightRepository extends JpaRepository<Weight, Long> {
-    Iterable<Weight> findAllForUserByUserId(Long userId);
+    Iterable<Weight> findAllByUser(User user);
 }

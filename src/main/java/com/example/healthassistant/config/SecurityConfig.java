@@ -40,7 +40,8 @@ public class SecurityConfig {
                                         "/api/v1.0/auth/refreshToken",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
-                                        "/api/v1.0/users/**")
+                                        "/api/v1.0/users/**",
+                                        "/api/v1.0/weight/**")
                                 .permitAll()
                                 .requestMatchers(
                                         "/api/v1.0/auth/ping")
@@ -66,7 +67,6 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-
     }
 
     @Bean

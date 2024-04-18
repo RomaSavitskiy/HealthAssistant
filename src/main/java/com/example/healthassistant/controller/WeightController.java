@@ -1,11 +1,14 @@
 package com.example.healthassistant.controller;
 
+import com.example.healthassistant.jwt.service.JwtService;
 import com.example.healthassistant.model.entity.Weight;
+import com.example.healthassistant.model.request.WeightRequestTo;
+import com.example.healthassistant.model.response.WeightResponseTo;
 import com.example.healthassistant.service.WeightService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,25 +20,27 @@ import java.lang.reflect.InvocationTargetException;
         description="Содержит CRUD операции для сущности Weight")
 public class WeightController {
     private final WeightService service;
-    @PostMapping
+    private final JwtService jwtService;
+
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Weight save(@RequestBody Weight weight) {
-        return service.save(weight);
+    public WeightResponseTo save(@RequestBody WeightRequestTo weightRequestTo, HttpServletRequest request) {
+        return service.save(weightRequestTo, jwtService.getTokenFromHeader(request));
     }
 
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Weight getById(@PathVariable Long id) {
         return service.findById(id);
-    }
+    }*/
 
-    @GetMapping("/{userId}")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<Weight> findAllForUserByUserId(@PathVariable Long userId) {
-        return service.findAllForUserByUserId(userId);
+    public Iterable<WeightResponseTo> findAllForUser(HttpServletRequest request) {
+        return service.findAllForUser(jwtService.getTokenFromHeader(request));
     }
 
-    @PutMapping()
+   /* @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public Weight update(@RequestBody Weight weight) throws InvocationTargetException, IllegalAccessException {
         return service.update(weight);
@@ -45,5 +50,5 @@ public class WeightController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
-    }
+    }*/
 }

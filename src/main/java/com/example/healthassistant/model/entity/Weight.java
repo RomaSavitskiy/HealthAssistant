@@ -12,19 +12,17 @@ import java.time.LocalDate;
 @Entity
 @Table
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Weight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(min = 2, max = 3)
-    @Schema(example = "100")
     private Long weight;
 
-	@NotNull
-    @Schema(example = "0000-00-00")
-    @Column(name = "local_date", columnDefinition = "DATE")
+    @Column(updatable = false)
     private LocalDate localDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

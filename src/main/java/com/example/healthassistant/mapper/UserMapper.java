@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
     User dtoToEntity(UserRequestTo editorRequestTo);
+    User dtoToEntity(UserResponseTo userResponseTo);
 
     List<User> dtoToEntity(Iterable<UserRequestTo> editors);
 

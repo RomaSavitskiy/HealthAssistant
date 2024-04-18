@@ -18,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private long id;
+    private Long id;
 
     private String username;
 
@@ -27,4 +27,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserRole> roles = new HashSet<>();
+
+    @OneToMany(mappedBy="user")
+    private Set<Weight> weights;
 }

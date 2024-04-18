@@ -1,10 +1,12 @@
 package com.example.healthassistant.jwt.service;
 
+import com.example.healthassistant.exceptions.UnauthorizedRequest;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -60,12 +62,20 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60))
+                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 600))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
     private Key getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String getTokenFromHeader(HttpServletRequest request) {
+        try {
+            return request.getHeader("Authorization").replace("Bearer ", "");
+        } catch (NullPointerException e) {
+            throw new UnauthorizedRequest(401L, "Unauthorized request");
+        }
     }
 }
