@@ -23,22 +23,24 @@ public class WeightMapper {
         return Weight.builder()
                 .weight(weightRequestTo.weight())
                 .user(user)
-                .localDate(weightRequestTo.date())
+                .dateTime(weightRequestTo.dateTime())
                 .build();
     }
 
     public WeightResponseTo entityToResponse(Weight weight) {
         return WeightResponseTo.builder()
+                .id(weight.getId())
                 .weight(weight.getWeight())
-                .localDate(weight.getLocalDate())
+                .localDate(weight.getDateTime())
                 .build();
     }
 
     public Iterable<WeightResponseTo> entityToResponse(Iterable<Weight> weights) {
         return StreamSupport.stream(weights.spliterator(), false)
                 .map(weight -> WeightResponseTo.builder()
+                        .id(weight.getId())
                         .weight(weight.getWeight())
-                        .localDate(weight.getLocalDate())
+                        .localDate(weight.getDateTime())
                         .build())
                 .collect(Collectors.toList());
     }

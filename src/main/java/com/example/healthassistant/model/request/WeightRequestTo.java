@@ -10,7 +10,7 @@ public record WeightRequestTo (
         @Schema(example = "100")
         Long weight,
 
-        LocalDate date
+        String dateTime
 )
 {
 }

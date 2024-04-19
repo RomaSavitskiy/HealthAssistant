@@ -40,14 +40,12 @@ public class WeightService {
         return weightMapper.entityToResponse(weightRepository.findAllByUser(user));
     }
 
-    public Weight update(@Valid Weight weight) throws InvocationTargetException, IllegalAccessException {
-        Optional<Weight> oldWeight = weightRepository.findById(weight.getId());
-        if (oldWeight.isEmpty()) {
-            throw new NotFoundException(404L, "Weight with this id is not found");
-        }
+    /*public WeightResponseTo update(@Valid Weight weight, String token) throws InvocationTargetException, IllegalAccessException {
+        User user = userService.findByUsername(jwtService.extractUsername(token)).orElseThrow();
+
         BeanUtils.copyProperties(weight, oldWeight.get());
-        return weightRepository.save(weight);
-    }
+        return weightMapper.entityToResponse(weightRepository.save(weight));
+    }*/
     public void deleteById(@Min(0) Long id) {
         weightRepository.deleteById(id);
     }

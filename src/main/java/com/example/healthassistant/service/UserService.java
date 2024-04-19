@@ -46,8 +46,10 @@ public class UserService {
     public UserResponseTo update(@Valid UserRequestTo requestTo) throws InvocationTargetException, IllegalAccessException {
         User updatedUser = mapper.dtoToEntity(requestTo);
         User oldUser = repository.findById(requestTo.id()).orElseThrow();
-        BeanUtils.copyProperties(updatedUser, oldUser);
-		return mapper.entityToDto(updatedUser);
+        Long id = oldUser.getId();
+        BeanUtils.copyProperties(oldUser, updatedUser);
+        oldUser.setId(id);
+		return mapper.entityToDto(repository.save(oldUser));
     }
     public void deleteById(@Min(0) Long id) {
 		repository.deleteById(id);
