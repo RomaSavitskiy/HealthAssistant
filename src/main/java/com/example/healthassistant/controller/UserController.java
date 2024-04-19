@@ -14,7 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 @RestController
 @RequestMapping("/api/v1.0/users")
 @RequiredArgsConstructor
-@Slf4j
 @Tag(name="User Controller",
         description="Содержит CRUD операции для сущности User")
 public class UserController {

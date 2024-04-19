@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1.0/auth")
 @RequiredArgsConstructor
-@Slf4j
 @Tag(name="Authentication Controller",
         description="Содержит методы для регистрации и аутентификации пользователя")
 public class AuthController {

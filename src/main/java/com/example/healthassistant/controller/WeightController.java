@@ -28,12 +28,6 @@ public class WeightController {
         return service.save(weightRequestTo, jwtService.getTokenFromHeader(request));
     }
 
-    /*@GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Weight getById(@PathVariable Long id) {
-        return service.findById(id);
-    }*/
-
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public Iterable<WeightResponseTo> findAllForUser(HttpServletRequest request) {
@@ -42,11 +36,11 @@ public class WeightController {
 
    /* @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Weight update(@RequestBody Weight weight) throws InvocationTargetException, IllegalAccessException {
-        return service.update(weight);
-    }
+    public WeightResponseTo update(@RequestBody WeightRequestTo weightRequestTo, HttpServletRequest request) throws InvocationTargetException, IllegalAccessException {
+        return service.update(weightRequestTo, jwtService.getTokenFromHeader(request));
+    }*/
 
-    @DeleteMapping("/{id}")
+    /*@DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
