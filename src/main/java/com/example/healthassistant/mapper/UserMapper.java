@@ -21,4 +21,6 @@ public interface UserMapper {
     List<UserResponseTo> entityToDto(Iterable<User> editors);
 
     UserRequestTo authToEntity(AuthRequestTo authRequestTo);
+
+    UserRequestTo userToRequest(User user);
 }

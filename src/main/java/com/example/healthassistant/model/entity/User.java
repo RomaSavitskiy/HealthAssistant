@@ -30,4 +30,6 @@ public class User {
 
     @OneToMany(mappedBy="user")
     private Set<Weight> weights;
+
+    private String activationCode;
 }

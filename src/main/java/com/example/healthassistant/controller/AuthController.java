@@ -4,6 +4,7 @@ import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
 import com.example.healthassistant.jwt.model.DTO.RefreshTokenRequestTo;
 import com.example.healthassistant.jwt.service.AuthService;
+import com.example.healthassistant.model.response.UserResponseTo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,11 @@ public class AuthController {
     @PostMapping("/register")
     public JwtResponseTo register(@RequestBody AuthRequestTo request) {
         return authService.register(request);
+    }
+
+    @PostMapping("/activate/{code}")
+    public JwtResponseTo activate(@RequestBody AuthRequestTo authRequestTo, @PathVariable String code) {
+        return authService.activateUser(authRequestTo, code);
     }
 
     @GetMapping("/ping")
