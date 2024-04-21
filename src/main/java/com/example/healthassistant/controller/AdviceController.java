@@ -41,13 +41,4 @@ public class AdviceController {
             throws InvocationTargetException, IllegalAccessException {
         return adviceService.updateById(id, adviceRequestTo);
     }
-
-    @PostMapping("/email")
-    public void sendEmail() {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo("roma.savitskiiy@gmail.com");
-        mailMessage.setSubject("Complete Registration!");
-        mailMessage.setText("To confirm your account, please click here : ");
-        emailService.sendEmail(mailMessage);
-    }
 }

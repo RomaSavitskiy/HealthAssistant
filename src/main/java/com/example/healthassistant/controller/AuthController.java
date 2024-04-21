@@ -8,6 +8,7 @@ import com.example.healthassistant.model.response.UserResponseTo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public JwtResponseTo register(@RequestBody AuthRequestTo request) {
+    public ResponseEntity<?> register(@RequestBody AuthRequestTo request) {
         return authService.register(request);
     }
 

@@ -5,12 +5,16 @@ import com.example.healthassistant.exceptions.UserAlreadyExist;
 import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
 import com.example.healthassistant.jwt.model.DTO.RefreshTokenRequestTo;
+import com.example.healthassistant.jwt.model.entity.EmailConfirmation;
 import com.example.healthassistant.jwt.model.entity.RefreshToken;
 import com.example.healthassistant.mapper.UserMapper;
 import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.model.response.UserResponseTo;
+import com.example.healthassistant.service.EmailService;
 import com.example.healthassistant.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -31,13 +36,29 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
+    private final EmailConfirmationService emailConfirmationService;
+    private final RandomDigitsService randomDigitsService;
+    private final EmailService emailService;
 
-    public JwtResponseTo register(AuthRequestTo authRequestTo) {
-        if(userService.findByUsername(authRequestTo.getUsername()).isPresent()) {
-            throw new UserAlreadyExist(400L, "User with this username is already exist");
-        }
-        userService.save(userMapper.authToEntity(authRequestTo));
-        return null;
+    public ResponseEntity<?> register(AuthRequestTo authRequestTo) {
+        EmailConfirmation emailConfirmation = new EmailConfirmation();
+        emailConfirmation.setLogin(authRequestTo.getUsername());
+        emailConfirmation.setCode(randomDigitsService.generateRandomDigits(6));
+        emailConfirmationService.save(emailConfirmation);
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(authRequestTo.getUsername());
+        mailMessage.setSubject("Complete Registration!");
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "Welcome to HealthAssistant, your code: %s",
+                emailConfirmation.getLogin(),
+                emailConfirmation.getCode()
+        );
+        mailMessage.setText(message);
+        emailService.sendEmail(mailMessage);
+
+        return ResponseEntity.ok().body("Сode sent successfully !");
     }
 
     public JwtResponseTo login(AuthRequestTo authRequestTo) {
@@ -73,11 +94,14 @@ public class AuthService {
     }
 
     public JwtResponseTo activateUser(AuthRequestTo authRequestTo, String code) {
-        User user = userService.findByActivateCode(code).orElseThrow(
-                () -> new NotFoundException(404L, "Code is not found"));
+        EmailConfirmation emailConfirmation = emailConfirmationService.
+                findLastCodeByLogin(authRequestTo.getUsername());
 
-        user.setActivationCode(null);
-
-        return login(authRequestTo);
+        if (emailConfirmation.getCode().equals(code)) {
+            userService.save(userMapper.authToEntity(authRequestTo));
+            return login(authRequestTo);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 }
