@@ -10,6 +10,7 @@ import com.example.healthassistant.model.response.UserResponseTo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
 import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.mail.SimpleMailMessage;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
@@ -36,11 +38,14 @@ public class UserService {
 
     public UserResponseTo save(@Valid UserRequestTo requestTo) {
         User entity = mapper.dtoToEntity(requestTo);
+        log.info("1");
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         entity.setRoles(userRoleRepository.findById(1L).stream().collect(Collectors.toSet()));
         entity.setActivationCode(randomDigitsService.generateRandomDigits(6));
+        log.info("2");
 
         if(!Strings.isEmpty(entity.getUsername())) {
+            log.info("3");
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(entity.getUsername());
             mailMessage.setSubject("Complete Registration!");
@@ -50,9 +55,13 @@ public class UserService {
                     entity.getUsername(),
                     entity.getActivationCode()
             );
+            log.info("4");
             mailMessage.setText(message);
             emailService.sendEmail(mailMessage);
+            log.info("5");
         }
+
+        log.info("6");
 
         return mapper.entityToDto(repository.save(entity));
     }
