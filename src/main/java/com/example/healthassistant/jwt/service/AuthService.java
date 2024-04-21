@@ -34,6 +34,10 @@ public class AuthService {
     private final EmailService emailService;
 
     public ResponseEntity<?> register(AuthRequestTo authRequestTo) {
+        if (userService.findByUsername(authRequestTo.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("User is already exist");
+        }
+
         EmailConfirmation emailConfirmation = new EmailConfirmation();
         emailConfirmation.setLogin(authRequestTo.getUsername());
         emailConfirmation.setCode(randomDigitsService.generateRandomDigits(6));
