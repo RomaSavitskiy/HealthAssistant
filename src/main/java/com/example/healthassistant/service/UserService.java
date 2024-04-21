@@ -44,7 +44,7 @@ public class UserService {
         entity.setActivationCode(randomDigitsService.generateRandomDigits(6));
         log.info("2");
 
-        if(!Strings.isEmpty(entity.getUsername())) {
+        if(entity.getUsername() != null) {
             log.info("3");
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(entity.getUsername());
