@@ -1,16 +1,17 @@
 package com.example.healthassistant.jwt.model.entity;
 
+import com.example.healthassistant.jwt.listener.EmailConfirmationExpirationListener;
 import com.example.healthassistant.model.entity.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @RequiredArgsConstructor
+@EntityListeners(EmailConfirmationExpirationListener.class)
 public class EmailConfirmation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +20,6 @@ public class EmailConfirmation {
     private String code;
 
     private String login;
+
+    private LocalDateTime expirationDate;
 }
