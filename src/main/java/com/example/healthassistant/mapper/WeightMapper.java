@@ -29,18 +29,16 @@ public class WeightMapper {
 
     public WeightResponseTo entityToResponse(Weight weight) {
         return WeightResponseTo.builder()
-                .id(weight.getId())
                 .weight(weight.getWeight())
-                .localDate(weight.getDateTime())
+                .dateTime(weight.getDateTime())
                 .build();
     }
 
     public Iterable<WeightResponseTo> entityToResponse(Iterable<Weight> weights) {
         return StreamSupport.stream(weights.spliterator(), false)
                 .map(weight -> WeightResponseTo.builder()
-                        .id(weight.getId())
                         .weight(weight.getWeight())
-                        .localDate(weight.getDateTime())
+                        .dateTime(weight.getDateTime())
                         .build())
                 .collect(Collectors.toList());
     }

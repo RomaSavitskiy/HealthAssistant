@@ -45,19 +45,7 @@ public class AuthService {
         emailConfirmation.setLogin(authRequestTo.getUsername());
         emailConfirmation.setCode(randomDigitsService.generateRandomDigits(6));
         emailConfirmationService.save(emailConfirmation);
-
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(authRequestTo.getUsername());
-        mailMessage.setSubject("Complete Registration!");
-        String message = String.format(
-                "Hello, %s! \n" +
-                        "Welcome to HealthAssistant, your code: %s",
-                emailConfirmation.getLogin(),
-                emailConfirmation.getCode()
-        );
-        mailMessage.setText(message);
-        emailService.sendEmail(mailMessage);
-
+        sendMail(emailConfirmation.getLogin(), emailConfirmation.getCode());
         return ResponseEntity.ok().body("Сode sent successfully !");
     }
 
@@ -103,5 +91,24 @@ public class AuthService {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    public JwtResponseTo forgotPassword(String username) {
+       /* userService.*/
+        return null;
+    }
+
+    public void sendMail(String mail, String code) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail);
+        mailMessage.setSubject("Complete Registration!");
+        String message = String.format(
+                "Hello, %s! \n" +
+                        "Welcome to HealthAssistant, your code: %s",
+                mail,
+                code
+        );
+        mailMessage.setText(message);
+        emailService.sendEmail(mailMessage);
     }
 }

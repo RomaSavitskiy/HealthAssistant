@@ -6,10 +6,9 @@ import java.time.LocalDate;
 
 @Builder
 public record WeightResponseTo (
-        Long id,
         Long weight,
 
-        String localDate
+        String dateTime
 )
 {
 }

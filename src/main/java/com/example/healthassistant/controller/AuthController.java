@@ -4,12 +4,9 @@ import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
 import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
 import com.example.healthassistant.jwt.model.DTO.RefreshTokenRequestTo;
 import com.example.healthassistant.jwt.service.AuthService;
-import com.example.healthassistant.model.response.UserResponseTo;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,13 +37,8 @@ public class AuthController {
         return authService.activateUser(authRequestTo, code);
     }
 
-    @GetMapping("/ping")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public String test() {
-        try {
-            return "Welcome to ping 2";
-        } catch (Exception e){
-            throw new RuntimeException(e);
-        }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(String username) {
+        return ResponseEntity.ok().body(authService.forgotPassword(username));
     }
 }
