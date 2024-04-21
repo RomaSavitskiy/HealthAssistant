@@ -38,14 +38,11 @@ public class UserService {
 
     public UserResponseTo save(@Valid UserRequestTo requestTo) {
         User entity = mapper.dtoToEntity(requestTo);
-        log.info("1");
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         entity.setRoles(userRoleRepository.findById(1L).stream().collect(Collectors.toSet()));
         entity.setActivationCode(randomDigitsService.generateRandomDigits(6));
-        log.info("2");
 
         if(entity.getUsername() != null) {
-            log.info("3");
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(entity.getUsername());
             mailMessage.setSubject("Complete Registration!");
@@ -55,13 +52,9 @@ public class UserService {
                     entity.getUsername(),
                     entity.getActivationCode()
             );
-            log.info("4");
             mailMessage.setText(message);
             emailService.sendEmail(mailMessage);
-            log.info("5");
         }
-
-        log.info("6");
 
         return mapper.entityToDto(repository.save(entity));
     }

@@ -22,11 +22,11 @@ public class UserController {
     private final UserService service;
     private final EmailService emailService;
 
-  /*  @PostMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponseTo save(@RequestBody UserRequestTo requestTo) {
 		return service.save(requestTo);
-    }*/
+    }
 
     @GetMapping(("/{id}"))
     @ResponseStatus(HttpStatus.OK)
@@ -50,14 +50,5 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
-    }
-
-    @PostMapping("/{email}")
-    public void sendMessage(@PathVariable String email) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(email);
-        mailMessage.setSubject("Complete Registration!");
-        mailMessage.setText("Email content");
-        emailService.sendEmail(mailMessage);
     }
 }
