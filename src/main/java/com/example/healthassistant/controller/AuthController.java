@@ -1,8 +1,6 @@
 package com.example.healthassistant.controller;
 
-import com.example.healthassistant.jwt.model.DTO.AuthRequestTo;
-import com.example.healthassistant.jwt.model.DTO.JwtResponseTo;
-import com.example.healthassistant.jwt.model.DTO.RefreshTokenRequestTo;
+import com.example.healthassistant.jwt.model.DTO.*;
 import com.example.healthassistant.jwt.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +36,17 @@ public class AuthController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(String username) {
-        return ResponseEntity.ok().body(authService.forgotPassword(username));
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        return authService.forgotPassword(forgotPasswordRequest);
+    }
+
+    @PostMapping("/verify-reset-code")
+    public ResponseEntity<?> confirmCode(@RequestBody VerifyResetCodeRequest verifyResetCodeRequest) {
+        return authService.verifyResetCode(verifyResetCodeRequest);
+    }
+
+    @PostMapping("/reset-password")
+    public JwtResponseTo resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return authService.resetPassword(resetPasswordRequest);
     }
 }

@@ -63,4 +63,11 @@ public class ExceptionApiHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorMessage(401L, exception.getMessage()));
     }
+
+    @ExceptionHandler(IncorrectCodeException.class)
+    public ResponseEntity<ErrorMessage> notFoundException(IncorrectCodeException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorMessage(400L, exception.getMessage()));
+    }
 }
