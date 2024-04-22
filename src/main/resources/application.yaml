@@ -2,6 +2,9 @@ spring:
   profiles:
     active: dev
 
+  liquibase:
+    enabled: false
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -23,10 +26,3 @@ spring:
           starttls:
             enable: true
 
-
-
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        security: DEBUG
