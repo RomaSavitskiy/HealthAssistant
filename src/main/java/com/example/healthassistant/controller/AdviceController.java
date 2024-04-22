@@ -5,10 +5,8 @@ import com.example.healthassistant.model.enums.AdviceCategory;
 import com.example.healthassistant.model.request.AdviceRequestTo;
 import com.example.healthassistant.model.response.AdviceResponseTo;
 import com.example.healthassistant.service.AdviceService;
-import com.example.healthassistant.service.EmailService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 @Tag(name="Advice Controller", description="Содержит CRUD операции для сущности Advice")
 public class AdviceController {
     private final AdviceService adviceService;
-    private final EmailService emailService;
 
     @PostMapping
     public AdviceResponseTo saveAdvice(@RequestBody AdviceRequestTo adviceRequestTo) {

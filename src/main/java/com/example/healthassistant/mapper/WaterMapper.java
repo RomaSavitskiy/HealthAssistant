@@ -2,11 +2,8 @@ package com.example.healthassistant.mapper;
 
 import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.model.entity.Water;
-import com.example.healthassistant.model.entity.Weight;
 import com.example.healthassistant.model.request.WaterRequestTo;
-import com.example.healthassistant.model.request.WeightRequestTo;
 import com.example.healthassistant.model.response.WaterResponseTo;
-import com.example.healthassistant.model.response.WeightResponseTo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

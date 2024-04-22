@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class UnauthorizedRequest extends RuntimeException {
+public class UnauthorizedException extends RuntimeException {
     private Long status;
     private String message;
 }

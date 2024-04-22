@@ -1,27 +1,25 @@
 package com.example.healthassistant.service;
 
+import com.example.healthassistant.exceptions.NotFoundException;
 import com.example.healthassistant.jwt.repository.UserRoleRepository;
 import com.example.healthassistant.jwt.service.RandomDigitsService;
-import com.example.healthassistant.model.entity.User;
-import com.example.healthassistant.repository.UserRepository;
 import com.example.healthassistant.mapper.UserMapper;
+import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.model.request.UserRequestTo;
 import com.example.healthassistant.model.response.UserResponseTo;
+import com.example.healthassistant.repository.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
-import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,14 +59,15 @@ public class UserService {
     public UserResponseTo findById(@Min(0) Long id) {
         return repository.findById(id)
                 .map(mapper::entityToDto)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException(404L, "User not found"));
     }
 
     public Iterable<UserResponseTo> findAll() {
         return mapper.entityToDto(repository.findAll());
     }
 
-    public UserResponseTo update(@Valid UserRequestTo requestTo) throws InvocationTargetException, IllegalAccessException {
+    public UserResponseTo update(@Valid UserRequestTo requestTo)
+            throws InvocationTargetException, IllegalAccessException {
         User updatedUser = mapper.dtoToEntity(requestTo);
         User oldUser = repository.findById(requestTo.id()).orElseThrow();
         Long id = oldUser.getId();

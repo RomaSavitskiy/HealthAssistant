@@ -13,6 +13,7 @@ public class Advice {
 
     private String title;
 
+    @Column(length = 600)
     private String text;
 
     @Enumerated(EnumType.STRING)

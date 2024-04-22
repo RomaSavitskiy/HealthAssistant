@@ -6,9 +6,7 @@ import com.example.healthassistant.service.EmailService;
 import com.example.healthassistant.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +18,6 @@ import java.lang.reflect.InvocationTargetException;
         description="Содержит CRUD операции для сущности User")
 public class UserController {
     private final UserService service;
-    private final EmailService emailService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

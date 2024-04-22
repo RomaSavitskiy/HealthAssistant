@@ -1,6 +1,6 @@
 package com.example.healthassistant.jwt.service;
 
-import com.example.healthassistant.exceptions.UnauthorizedRequest;
+import com.example.healthassistant.exceptions.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -75,7 +75,7 @@ public class JwtService {
         try {
             return request.getHeader("Authorization").replace("Bearer ", "");
         } catch (NullPointerException e) {
-            throw new UnauthorizedRequest(401L, "Unauthorized request");
+            throw new UnauthorizedException(401L, "Unauthorized request");
         }
     }
 }

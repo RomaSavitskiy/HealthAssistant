@@ -3,7 +3,6 @@ package com.example.healthassistant.service;
 import com.example.healthassistant.exceptions.NotFoundException;
 import com.example.healthassistant.mapper.AdviceMapper;
 import com.example.healthassistant.model.entity.Advice;
-import com.example.healthassistant.model.entity.User;
 import com.example.healthassistant.model.enums.AdviceCategory;
 import com.example.healthassistant.model.request.AdviceRequestTo;
 import com.example.healthassistant.model.response.AdviceResponseTo;
@@ -11,7 +10,6 @@ import com.example.healthassistant.repository.AdviceRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.lang.reflect.InvocationTargetException;
 

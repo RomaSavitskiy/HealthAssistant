@@ -15,8 +15,8 @@ public class ExceptionApiHandler {
                 .body(new ErrorMessage(404L, exception.getMessage()));
     }
 
-    @ExceptionHandler(UpdateException.class)
-    public ResponseEntity<ErrorMessage> catchUpdateException(UpdateException exception) {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorMessage> catchUpdateException(BadRequestException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorMessage(400L, exception.getMessage()));
@@ -24,13 +24,6 @@ public class ExceptionApiHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorMessage> catchValidationException(ConstraintViolationException exception) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorMessage(400L, exception.getMessage()));
-    }
-
-    @ExceptionHandler(DeleteException.class)
-    public ResponseEntity<ErrorMessage> catchDeleteException(DeleteException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorMessage(400L, exception.getMessage()));
@@ -57,8 +50,8 @@ public class ExceptionApiHandler {
                 .body(new ErrorMessage(401L, exception.getMessage()));
     }
 
-    @ExceptionHandler(UnauthorizedRequest.class)
-    public ResponseEntity<ErrorMessage> notFoundException(UnauthorizedRequest exception) {
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorMessage> notFoundException(UnauthorizedException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErrorMessage(401L, exception.getMessage()));
