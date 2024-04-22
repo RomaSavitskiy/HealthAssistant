@@ -39,11 +39,12 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/api/v1.0/users/**",
-                                        "/api/v1.0/weight/**",
                                         "/api/v1.0/advices/**")
                                 .permitAll()
                                 .requestMatchers(
-                                        "/api/v1.0/auth/ping")
+                                        "/api/v1.0/auth/ping",
+                                        "/api/v1.0/weight/**",
+                                        "/api/v1.0/water/**")
                                 .authenticated()
                         )
                         .sessionManagement(SessionManage -> SessionManage

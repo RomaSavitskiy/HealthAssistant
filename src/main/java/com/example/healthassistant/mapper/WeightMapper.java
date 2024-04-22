@@ -14,8 +14,6 @@ import java.util.stream.StreamSupport;
 @Service
 @RequiredArgsConstructor
 public class WeightMapper {
-    private final UserService userService;
-    private final UserMapper userMapper;
 
     public Weight requestToEntity(WeightRequestTo weightRequestTo, User user) {
         return Weight.builder()
