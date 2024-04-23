@@ -28,15 +28,15 @@ public class WeightController {
         return service.findAllForUser(jwtService.getTokenFromHeader(request));
     }
 
-   /* @PutMapping()
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public WeightResponseTo update(@RequestBody WeightRequestTo weightRequestTo, HttpServletRequest request) throws InvocationTargetException, IllegalAccessException {
+    public WeightResponseTo update(@RequestBody WeightRequestTo weightRequestTo, HttpServletRequest request) throws IllegalAccessException {
         return service.update(weightRequestTo, jwtService.getTokenFromHeader(request));
-    }*/
+    }
 
-    /*@DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
-    }*/
+    }
 }

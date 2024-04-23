@@ -3,6 +3,7 @@ package com.example.healthassistant.advice;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,26 +13,30 @@ import java.lang.reflect.InvocationTargetException;
 @RequiredArgsConstructor
 @Tag(name="Advice Controller", description="Содержит CRUD операции для сущности Advice")
 public class AdviceController {
-    private final AdviceService adviceService;
+    private final AdviceService adviceServiceImpl;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public AdviceResponseTo saveAdvice(@RequestBody AdviceRequestTo adviceRequestTo) {
-        return adviceService.save(adviceRequestTo);
+        return adviceServiceImpl.save(adviceRequestTo);
     }
 
     @GetMapping
-    public Iterable<AdviceResponseTo> deleteAdvice(AdviceCategory category) {
-        return adviceService.findAllByCategory(category);
+    @ResponseStatus(HttpStatus.OK)
+    public Iterable<AdviceResponseTo> findAll(AdviceCategory category) {
+        return adviceServiceImpl.findAllByCategory(category);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
-        adviceService.deleteById(id);
+        adviceServiceImpl.deleteById(id);
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public AdviceResponseTo updateById(@PathVariable Long id, AdviceRequestTo adviceRequestTo)
             throws InvocationTargetException, IllegalAccessException {
-        return adviceService.updateById(id, adviceRequestTo);
+        return adviceServiceImpl.updateById(id, adviceRequestTo);
     }
 }

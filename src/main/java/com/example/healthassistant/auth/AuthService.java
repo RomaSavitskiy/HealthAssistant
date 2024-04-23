@@ -12,8 +12,8 @@ import com.example.healthassistant.auth.utils.RandomDigitsService;
 import com.example.healthassistant.auth.jwt.RefreshTokenService;
 import com.example.healthassistant.user.UserMapper;
 import com.example.healthassistant.user.User;
-import com.example.healthassistant.utils.EmailService;
-import com.example.healthassistant.user.UserService;
+import com.example.healthassistant.auth.mail.MailService;
+import com.example.healthassistant.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -29,17 +29,17 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-	private final UserService userService;
+	private final UserServiceImpl userServiceImpl;
     private final UserMapper userMapper;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final MailConfirmationService mailConfirmationService;
     private final RandomDigitsService randomDigitsService;
-    private final EmailService emailService;
+    private final MailService mailService;
 
     public ResponseEntity<?> register(AuthRequestTo authRequestTo) {
-        if (userService.findByUsername(authRequestTo.getUsername()).isPresent()) {
+        if (userServiceImpl.findByUsername(authRequestTo.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("User is already exist");
         }
 
@@ -88,7 +88,7 @@ public class AuthService {
                 findLastCodeByLogin(authRequestTo.getUsername());
 
         if (mailConfirmation.getCode().equals(code)) {
-            userService.save(userMapper.authToEntity(authRequestTo));
+            userServiceImpl.save(userMapper.authToEntity(authRequestTo));
             return login(authRequestTo);
         } else {
             throw new NoSuchElementException();
@@ -107,7 +107,7 @@ public class AuthService {
     }
 
     public ResponseEntity<?> forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
-        userService.findByUsername(forgotPasswordRequest.getUsername()).orElseThrow(
+        userServiceImpl.findByUsername(forgotPasswordRequest.getUsername()).orElseThrow(
                 () -> new NotFoundException(404L, "User with this email is not found")
         );
         MailConfirmation mailConfirmation = new MailConfirmation();
@@ -124,11 +124,11 @@ public class AuthService {
         mailMessage.setTo(mail);
         mailMessage.setSubject("Message from Health-Assistant!");
         mailMessage.setText("Hello, " + mail + " . Your code: " + code);
-        emailService.sendEmail(mailMessage);
+        mailService.sendEmail(mailMessage);
     }
 
     public JwtResponseTo resetPassword(ResetPasswordRequest resetPasswordRequest) {
-        User user = userService.findByUsername(resetPasswordRequest.getUsername()).orElseThrow(
+        User user = userServiceImpl.findByUsername(resetPasswordRequest.getUsername()).orElseThrow(
                 () -> new NotFoundException(404L, "User with this mail is not found")
         );
 
@@ -137,7 +137,7 @@ public class AuthService {
 
         if (mailConfirmation.getCode().equals(resetPasswordRequest.getCode())) {
             user.setPassword(resetPasswordRequest.getPassword());
-            userService.save(userMapper.userToRequest(user));
+            userServiceImpl.save(userMapper.userToRequest(user));
             AuthRequestTo authRequestTo = new AuthRequestTo();
             authRequestTo.setPassword(resetPasswordRequest.getPassword());
             authRequestTo.setUsername(resetPasswordRequest.getUsername());

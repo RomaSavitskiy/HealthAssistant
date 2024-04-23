@@ -1,5 +1,6 @@
 package com.example.healthassistant;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Profile;

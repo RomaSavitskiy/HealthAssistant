@@ -1,8 +1,7 @@
 package com.example.healthassistant.auth.mail;
 
 import com.example.healthassistant.exceptions.NotFoundException;
-import com.example.healthassistant.auth.mail.MailConfirmation;
-import com.example.healthassistant.auth.mail.MailConfirmationRepository;
+import com.example.healthassistant.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,9 +13,11 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class MailConfirmationService {
     private final MailConfirmationRepository mailConfirmationRepository;
+    private final UserServiceImpl userServiceImpl;
 
     public MailConfirmation findLastCodeByLogin(String login) {
-        return mailConfirmationRepository.findTopByLoginOrderByIdDesc(login).orElseThrow(
+        return mailConfirmationRepository.findTopByLoginOrderByIdDesc(
+                userServiceImpl.findByUsername(login).orElseThrow()).orElseThrow(
                 () -> new NotFoundException(404L, "Email is not found")
         );
     }

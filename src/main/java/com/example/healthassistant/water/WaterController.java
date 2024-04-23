@@ -27,4 +27,16 @@ public class WaterController {
     public Iterable<WaterResponseTo> findAllForUser(HttpServletRequest request) {
         return service.findAllForUser(jwtService.getTokenFromHeader(request));
     }
+
+    @PutMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public WaterResponseTo update(@RequestBody WaterRequestTo waterRequestTo, HttpServletRequest request) throws IllegalAccessException {
+        return service.update(waterRequestTo, jwtService.getTokenFromHeader(request));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.deleteById(id);
+    }
 }
