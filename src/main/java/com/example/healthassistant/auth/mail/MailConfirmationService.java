@@ -16,9 +16,8 @@ public class MailConfirmationService {
     private final UserServiceImpl userServiceImpl;
 
     public MailConfirmation findLastCodeByLogin(String login) {
-        return mailConfirmationRepository.findTopByLoginOrderByIdDesc(
-                userServiceImpl.findByUsername(login).orElseThrow()).orElseThrow(
-                () -> new NotFoundException(404L, "Email is not found")
+        return mailConfirmationRepository.findTopByLoginOrderByIdDesc(login)
+                .orElseThrow(() -> new NotFoundException(404L, "Email is not found")
         );
     }
 
@@ -26,7 +25,7 @@ public class MailConfirmationService {
         return mailConfirmationRepository.save(mailConfirmation);
     }
 
-    @Scheduled(cron = "0 */10 * * * ?")// Выполняется каждые 10 минут
+    @Scheduled(cron = "0 */10 * * * ?")
     @Transactional
     public void cleanExpiredEntities() {
         LocalDateTime now = LocalDateTime.now();

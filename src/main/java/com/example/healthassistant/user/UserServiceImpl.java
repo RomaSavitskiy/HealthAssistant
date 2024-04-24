@@ -34,21 +34,6 @@ public class UserServiceImpl implements UserService {
         User entity = mapper.dtoToEntity(requestTo);
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         entity.setRoles(userRoleRepository.findById(1L).stream().collect(Collectors.toSet()));
-        entity.setActivationCode(randomDigitsService.generateRandomDigits(6));
-
-        if(entity.getUsername() != null) {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(entity.getUsername());
-            mailMessage.setSubject("Complete Registration!");
-            String message = String.format(
-                    "Hello, %s! \n" +
-                            "Welcome to HealthAssistant, your code: %s",
-                    entity.getUsername(),
-                    entity.getActivationCode()
-            );
-            mailMessage.setText(message);
-            mailService.sendEmail(mailMessage);
-        }
 
         return mapper.entityToDto(repository.save(entity));
     }
@@ -79,9 +64,9 @@ public class UserServiceImpl implements UserService {
         return repository.findByUsername(username);
     }
 
-    public Optional<User> findByActivateCode(String code) {
+    /*public Optional<User> findByActivateCode(String code) {
         return repository.findByActivationCode(code);
-    }
+    }*/
 }
 
 

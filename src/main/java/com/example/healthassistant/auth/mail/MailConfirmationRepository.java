@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface MailConfirmationRepository extends JpaRepository<MailConfirmation, Long> {
-    Optional<MailConfirmation> findTopByLoginOrderByIdDesc(User user);
+    Optional<MailConfirmation> findTopByLoginOrderByIdDesc(String login);
     void deleteByExpirationDateBefore(LocalDateTime date);
 }

@@ -9,4 +9,12 @@ spring:
     init:
       mode: always # you won't do this in prod, I'm just doing this for demo purposes
 
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
 

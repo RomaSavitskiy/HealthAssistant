@@ -19,6 +19,4 @@ public interface UserService {
     void deleteById(@Min(0) Long id);
 
     Optional<User> findByUsername(String username);
-
-    Optional<User> findByActivateCode(String code);
 }

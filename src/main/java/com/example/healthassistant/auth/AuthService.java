@@ -10,6 +10,7 @@ import com.example.healthassistant.auth.jwt.RefreshToken;
 import com.example.healthassistant.auth.jwt.JwtService;
 import com.example.healthassistant.auth.utils.RandomDigitsService;
 import com.example.healthassistant.auth.jwt.RefreshTokenService;
+import com.example.healthassistant.exceptions.UserAlreadyExist;
 import com.example.healthassistant.user.UserMapper;
 import com.example.healthassistant.user.User;
 import com.example.healthassistant.auth.mail.MailService;
@@ -87,11 +88,15 @@ public class AuthService {
         MailConfirmation mailConfirmation = mailConfirmationService.
                 findLastCodeByLogin(authRequestTo.getUsername());
 
+        if (userServiceImpl.findByUsername(authRequestTo.getUsername()).isPresent()) {
+            throw new UserAlreadyExist(400L, "User already exist");
+        }
+
         if (mailConfirmation.getCode().equals(code)) {
             userServiceImpl.save(userMapper.authToEntity(authRequestTo));
             return login(authRequestTo);
         } else {
-            throw new NoSuchElementException();
+            throw new NotFoundException(404L, "Code is not valid");
         }
     }
 
