@@ -31,7 +31,8 @@ import org.springframework.context.annotation.Configuration;
                         email = "roma.savitskiiy@gmail.com",
                         url = "https://github.com/RomaSavitskiy/HealthAssistant/tree/master"// Электронная почта для связи
                 )
-        )
+        ),
+        servers = {@Server(url = "/")}
 )
 public class SwaggerConfig {
 
