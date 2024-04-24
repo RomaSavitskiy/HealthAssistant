@@ -32,7 +32,6 @@ import org.springframework.context.annotation.Configuration;
                         url = "https://github.com/RomaSavitskiy/HealthAssistant/tree/master"// Электронная почта для связи
                 )
         )
-        ,servers = {@Server(url = "/health-assistant")}
 )
 public class SwaggerConfig {
 
